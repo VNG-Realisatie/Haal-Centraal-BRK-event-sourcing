@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title: "BRK events bevragen API"
+  version: "1.0.0"
+paths:
+  /abonnement/kadastraalonroerendezaakevents:
+    get:
+      description: |
+        ophalen van nieuwe kadastraal onroerende zaak events
+        deze events kunnen op basis van topic worden gefilterd
+      parameters:
+        - name: topics
+          in: query
+          required: false
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          description: events gevonden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KadastraalOnroerendeZaakEvents"
+  /kadastraalonroerendezaakevents:
+    get:
+      description: |
+        ophalen van kadastraal onroerende zaak events op basis van
+        - kadastraalonroerendezaakidentificatie
+        - stukidentificatie
+        - zakelijkgerechtigdeidentificatie
+        het resultaat kan worden verfijnd door middel van de van en tot tijdstip
+      parameters:
+        - name: kadastraalonroerendezaakidentificatie
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: stukidentificatie
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: zakelijkgerechtigdeidentificatie
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: van
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: tot
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: events gevonden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KadastraalOnroerendeZaakEvents"
+  /kadastraalonroerendezaakevents/{identificatie}:
+    get:
+      parameters:
+        - name: identificatie
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: event gevonden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KadastraalOnroerendeZaakEvent"
+components:
+  schemas:
+    KadastraalOnroerendeZaakEvents:
+      type: array
+      items:
+        $ref: "#/components/schemas/KadastraalOnroerendeZaakEvent"
+    KadastraalOnroerendeZaakEvent:
+      type: object
+      properties:
+        identificatie:
+          description: unieke identifier van een kadastraal onroerende zaak event
+          type: string
+        tijdstip:
+          description: creatie tijdstip van event
+          type: string
+          format: date-time
+        indicatieStukCompleet:
+          description: true als alle stukdelen behorende bij de stuk aanwezig zijn t.b.v. het beoordelen van samenhangend geheel
+          type: boolean
+        vorigEventLink:
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/master/api-specificatie/common.yaml#/components/schemas/Href"
+        nieuweToestandKadastraalOnroerendeZaak:
+          $ref: "#/components/schemas/KadastraalOnroerendeZaakMutatie"
+    KadastraalOnroerendeZaakMutatie:
+      allOf:
+        - $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/KadastraalOnroerendeZaak"
+      properties:
+        adressen:
+          type: array
+          items: 
+            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/Adres"
+        zakelijkGerechtigden:
+          type: array
+          items:
+            $ref: "#/components/schemas/ZakelijkGerechtigdeMutatie"
+        stukken:
+          type: "array"
+          items:
+            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/AangebodenStuk"
+        onroerendeZaakFiliatie:
+          type: "array"
+          description: "Dit is een link naar filiaties die deze Kadastraal Onroerende Zaak betreffen."
+          items:
+            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/OnroerendeZaakFiliatie"
+        voorwaartseOnroerendeZaakFiliatie:
+          type: "array"
+          description: "Dit is een link naar filiaties waarbij deze Kadastraal Onroerende Zaak overgegaan in een andere KadastraalOnroerendeZaak."
+          items:
+            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/VoorwaartseOnroerendeZaakFiliatie"
+        publiekrechtelijkeBeperkingen:
+          type: "array"
+          description: "Dit is een link naar filiaties waarbij deze Kadastraal Onroerende Zaak overgegaan in een andere KadastraalOnroerendeZaak."
+          items:
+            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/PubliekrechtelijkeBeperking"
+
+    ZakelijkGerechtigdeMutatie:
+      allOf:
+        - $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/ZakelijkGerechtigde"
+      properties:
+        stukken:
+          type: "array"
+          items:
+            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/AangebodenStuk"
+        stukdelen:
+          type: "array"
+          items:
+            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-bevragen/BRKBevragen1.1/specificatie/BRK-Bevragen/openapi.yaml#/components/schemas/Stukdeel"
