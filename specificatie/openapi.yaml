@@ -6,8 +6,13 @@ paths:
   /abonnement/kadastraalonroerendezaakevents:
     get:
       description: |
-        ophalen van nieuwe kadastraal onroerende zaak events
-        deze events kunnen op basis van topic worden gefilterd
+        Ophalen van nieuwe kadastraal onroerende zaak events.  
+        Het resultaat kan worden gefilterd op basis van
+        - één of meerdere topics
+        - de van tijdstip
+        - de van en tot tijdstip
+
+        Met de expand parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
       parameters:
         - name: topics
           in: query
@@ -17,6 +22,24 @@ paths:
             type: array
             items:
               type: string
+        - name: van
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: tot
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         200:
           description: events gevonden
@@ -27,11 +50,17 @@ paths:
   /kadastraalonroerendezaakevents:
     get:
       description: |
-        ophalen van kadastraal onroerende zaak events op basis van
+        Ophalen van kadastraal onroerende zaak events op basis van
         - kadastraalonroerendezaakidentificatie
         - stukidentificatie
         - zakelijkgerechtigdeidentificatie
-        het resultaat kan worden verfijnd door middel van de van en tot tijdstip
+        - kadastraleaanduiding
+        - de van tijdstip
+        - de van en tot tijdstip
+
+        Verplicht: Eén van de drie identificatie parameters of de kadastrale aanduiding parameter
+        
+        Met de expand parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
       parameters:
         - name: kadastraalonroerendezaakidentificatie
           in: query
@@ -48,6 +77,19 @@ paths:
           required: false
           schema:
             type: string
+        - name: kadastraleaanduiding
+          description: |
+            Kadastrale aanduiding is een unieke aanduiding van een onroerende zaak. De volgorde waarin deze string wordt opgebouwd is
+            - [Kadastrale gemeente](http://www.kadaster.nl/schemas/waardelijsten/KadastraleGemeente/).
+            - sectie, 1 of 2 hoofdletters
+            - perceelnummer, 1 tot 5 cijfers
+            - appartementsrechtVolgnummer, Hoofdletter A gevolgd door 1 tot 4 cijfers (optioneel)
+          in: query
+          required: false
+          schema:
+            type: string
+            pattern: "^([a-zA-Z0-9'][a-zA-Z0-9' ,-]*[a-zA-Z0-9]) ([A-IK-Z]{1,2}) ([1-9][0-9]{0,4})( A[1-9][0-9]{0,3})?$"
+            example: "'s Gravenhage C 1277 A3"
         - name: van
           in: query
           required: false
@@ -60,6 +102,12 @@ paths:
           schema:
             type: string
             format: date-time
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         200:
           description: events gevonden
@@ -69,12 +117,22 @@ paths:
                 $ref: "#/components/schemas/KadastraalOnroerendeZaakEvents"
   /kadastraalonroerendezaakevents/{identificatie}:
     get:
+      description: |
+        Ophalen van een kadastraal onroerende zaak event op basis van zijn identificatie
+
+        Met de expand parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
       parameters:
         - name: identificatie
           in: path
           required: true
           schema:
             type: string
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         200:
           description: event gevonden
@@ -90,6 +148,9 @@ components:
         $ref: "#/components/schemas/KadastraalOnroerendeZaakEvent"
     KadastraalOnroerendeZaakEvent:
       type: object
+      description: |
+        - vorigEventLink bevat een link waarmee de vorige KadastraalOnroerendeZaakEvent kan worden opgehaald
+        - vorigToestandKadastraalOnroerendeZaak wordt alleen gevuld als expand=true
       properties:
         identificatie:
           description: unieke identifier van een kadastraal onroerende zaak event
@@ -103,6 +164,8 @@ components:
           type: boolean
         vorigEventLink:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/master/api-specificatie/common.yaml#/components/schemas/Href"
+        vorigToestandKadastraalOnroerendeZaak:
+          $ref: "#/components/schemas/KadastraalOnroerendeZaakMutatie"
         nieuweToestandKadastraalOnroerendeZaak:
           $ref: "#/components/schemas/KadastraalOnroerendeZaakMutatie"
     KadastraalOnroerendeZaakMutatie:
