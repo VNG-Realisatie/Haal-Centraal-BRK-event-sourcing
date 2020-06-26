@@ -23,7 +23,7 @@ paths:
             type: string
       - name: van
         in: query
-        required: false
+        required: true
         style: form
         explode: true
         schema:
@@ -37,7 +37,7 @@ paths:
         schema:
           type: string
           format: date-time
-      - name: expand
+      - name: inclusiefVorigToestand
         in: query
         required: false
         style: form
@@ -120,7 +120,7 @@ paths:
         schema:
           type: string
           format: date-time
-      - name: expand
+      - name: inclusiefVorigToestand
         in: query
         required: false
         style: form
@@ -149,7 +149,7 @@ paths:
         explode: false
         schema:
           type: string
-      - name: expand
+      - name: inclusiefVorigToestand
         in: query
         required: false
         style: form
