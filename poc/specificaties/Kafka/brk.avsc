@@ -1,0 +1,117 @@
+{
+	"namespace": "Kadaster",
+	"type": "record",
+	"name": "KadastraalOnroerendeZaakEvent",
+	"fields": [
+		{ "name": "IndicatieStukCompleet", "type": "boolean" },
+		{ "name": "VorigEventIdentificatie", "type": [ "null", "string" ] },
+		{ "name": "NieuweToestand",
+		  "type": {
+			"namespace": "Kadaster",
+			"type": "record",
+			"name": "KadastraalOnroerendeZaak",
+			"fields": [
+				{ "name": "Id", "type": "long" },
+				{
+					"name": "Type",
+					"type": {
+						"namespace": "Kadaster",
+						"type": "enum",
+						"name": "KadastraalOnroerendeZaakType",
+						"symbols": [ "Apartementsrecht", "Perceel" ]
+					}
+				},
+				{
+					"name": "KadastraleAanduiding",
+					"type": {
+						"namespace": "Kadaster",
+						"type": "record",
+						"name": "KadastraleAanduiding",
+						"fields": [
+							{
+								"name": "AppartementsrechtVolgnummer",
+								"type": [ "null", "int" ]
+							},
+							{
+								"name": "KadastraleGemeenteCode",
+								"type": "int"
+							},
+							{
+								"name": "Perceelnummer",
+								"type": "int"
+							},
+							{
+								"name": "Sectie",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "Koopsom",
+					"type": {
+						"namespace": "Kadaster",
+						"type": "record",
+						"name": "Koopsom",
+						"fields": [
+							{
+								"name": "Bedrag",
+								"type": "long"
+							},
+							{
+								"name": "Koopjaar",
+								"type": "int"
+							},
+							{
+								"name": "IndicatieMetMeerObjectenVerkregen",
+								"type": "boolean"
+							}
+						]
+					}
+				},
+				{
+					"name": "ZakelijkGerechtigden",
+					"type": {
+						"type": "array",
+						"items": {
+							"namespace": "Kadaster",
+							"type": "record",
+							"name": "ZakelijkGerechtigde",
+							"fields": [
+								{ "name": "Id", "type": "long" },
+								{
+									"name": "Type",
+									"type": {
+										"namespace": "Kadaster",
+										"type": "enum",
+										"name": "ZakelijkGerechtigdeType",
+										"symbols": [
+											"Beklemrechthouder",
+											"Eigenaar",
+											"Erfpachter",
+											"GebruikBewoning",
+											"Grondrente",
+											"Opstalhouder",
+											"Vaderlandsrecht",
+											"Stadsmeierrecht",
+											"Vruchtgebruiker",
+											"ErfpachterOpstalhouder",
+											"Nutsvoorzieningen",
+											"TweeBelastingen",
+											"BelastingDerde",
+											"Bprecht",
+											"NutsvoorzieningenGedeelte",
+											"Artikel5_3b"
+										]
+									}
+								},
+								{ "name": "Aanvangsdatum", "type": "long", "logicalType": "date" }
+							]
+						}
+					}
+				}
+			]
+		  }
+		}
+	]
+}

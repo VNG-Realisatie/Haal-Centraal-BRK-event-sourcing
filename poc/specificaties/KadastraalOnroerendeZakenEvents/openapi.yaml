@@ -1,0 +1,210 @@
+openapi: 3.0.0
+info:
+  title: "BRK events bevragen API"
+  version: "1.0.0"
+paths:
+  /abonnement/kadastraalonroerendezaakevents:
+    get:
+      operationId: ZoekKadastraalOnroerendeZaakEventsInAbonnement
+      description: |-
+        Ophalen van nieuwe kadastraal onroerende zaak events.  
+        Het resultaat kan worden gefilterd op basis van
+        - de **van** tijdstip
+
+        Met de **inclusiefVorigToestand** parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
+      parameters:
+        - in: header
+          name: abonnementIdentificatie
+          required: true
+          schema:
+            type: string
+        - name: van
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: inclusiefVorigToestand
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: events gevonden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KadastraalOnroerendeZaakEvents"
+      tags:
+        - Abonnementen
+  /kadastraalonroerendezaakevents:
+    get:
+      operationId: ZoekKadastraalOnroerendeZaakEvents
+      description: |-
+        Ophalen van kadastraal onroerende zaak events op basis van
+        - de kadastraalonroerendezaakidentificatie
+        - de **van** tijdstip
+
+        Met de **inclusiefVorigToestand** parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
+      parameters:
+        - name: kadastraalonroerendezaakidentificatie
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: van
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: inclusiefVorigToestand
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: events gevonden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KadastraalOnroerendeZaakEvents"
+      tags:
+        - KadastraalOnroerendeZaakEvents
+  /kadastraalonroerendezaakevents/{identificatie}:
+    get:
+      operationId: RaadpleegKadastraalOnroerendeZaakEvent
+      description: |
+        Ophalen van een kadastraal onroerende zaak event op basis van zijn **identificatie**
+
+        Met de **inclusiefVorigToestand** parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
+      parameters:
+        - name: identificatie
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: inclusiefVorigToestand
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: event gevonden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KadastraalOnroerendeZaakEvent"
+      tags:
+        - KadastraalOnroerendeZaakEvents
+components:
+  schemas:
+    KadastraalOnroerendeZaakEvents:
+      type: array
+      items:
+        $ref: "#/components/schemas/KadastraalOnroerendeZaakEvent"
+    KadastraalOnroerendeZaakEvent:
+      type: object
+      description: |
+        - vorigEventLink bevat een link waarmee de vorige KadastraalOnroerendeZaakEvent kan worden opgehaald
+        - vorigToestandKadastraalOnroerendeZaak wordt alleen gevuld als expand=true
+      properties:
+        identificatie:
+          description: unieke identifier van een kadastraal onroerende zaak event
+          type: string
+        tijdstip:
+          description: creatie tijdstip van event
+          type: string
+          format: date-time
+        indicatieStukCompleet:
+          description: true als alle stukdelen behorende bij de stuk aanwezig zijn t.b.v. het beoordelen van samenhangend geheel
+          type: boolean
+        vorigEventLink:
+          type: string
+        vorigToestandKadastraalOnroerendeZaak:
+          $ref: "#/components/schemas/KadastraalOnroerendeZaakMutatie"
+        nieuweToestandKadastraalOnroerendeZaak:
+          $ref: "#/components/schemas/KadastraalOnroerendeZaakMutatie"
+    KadastraalOnroerendeZaakMutatie:
+      type: object
+      properties:
+        identificatie:
+          type: string
+        kadastraleAanduiding:
+          type: string
+        type:
+          $ref: "#/components/schemas/TypeKadastraalOnroerendeZaak_enum"
+        koopsom:
+          $ref: "#/components/schemas/TypeKoopsom"
+        zakelijkGerechtigden:
+          $ref: "#/components/schemas/ZakelijkGerechtigdeCollection"
+    TypeGerechtigde_enum:
+      type: string
+      description: "Het type zakelijk recht dat deze gerechtigde heeft. Afgeleid van de aard zakelijk recht:\n
+      * `beklemrechthouder` - 1 Beklemrechthouder\n
+      * `eigenaar` - 2 Eigenaar\n
+      * `erfpachter` - 3 Erfpachter\n
+      * `gebruik_bewoning` - 4 Rechthebbende van Gebruik en bewoning\n
+      * `grondrente` - 5 Grondrente gerechtigde\n
+      * `opstalhouder` - 7 Opstalhouder\n
+      * `vaderlandsrecht` - 9 Rechthebbende van Oud-vaderlandsrecht\n
+      * `stadsmeierrecht` - 11 Rechthebbende van Stadsmeierrecht\n
+      * `vruchtgebruiker` - 12 Vruchtgebruiker\n
+      * `erfpachter_opstalhouder` - 13 Erfpachter en opstalhouder\n
+      * `nutsvoorzieningen` - 14 Opstalhouder nutsvoorzieningen\n
+      * `twee_belastingen` - 20 Zakelijk Rechthebbende na twee of meer zakelijke belastingen\n
+      * `belasting_derde` - 21 Zakelijk rechthebbende belasting derde of volgende\n
+      * `bp_recht` - 22 BP-gerechtigde\n
+      * `nutsvoorzieningen_gedeelte` - 23 Opstalhouder Nutsvoorzieningen op gedeelte van perceel\n
+      * `artikel5_3b` - 24 Zakelijk gerechtigde als bedoeld in artikel 5, lid 3, onder b, van de Belemmeringenwet Privaatrecht op gedeelte van perceel"
+      enum:
+        - "beklemrechthouder"
+        - "eigenaar"
+        - "erfpachter"
+        - "gebruik_bewoning"
+        - "grondrente"
+        - "opstalhouder"
+        - "vaderlandsrecht"
+        - "stadsmeierrecht"
+        - "vruchtgebruiker"
+        - "erfpachter_opstalhouder"
+        - "nutsvoorzieningen"
+        - "twee_belastingen"
+        - "belasting_derde"
+        - "bp_recht"
+        - "nutsvoorzieningen_gedeelte"
+        - "artikel5_3b"
+    TypeKadastraalOnroerendeZaak_enum:
+      type: string
+      enum:
+      - "appartementsrecht"
+      - "perceel"
+    TypeKoopsom:
+      type: object
+      properties:
+        koopsom:
+          type: integer
+        koopjaar:
+          type: integer
+        indicatieMetMeerObjectenVerkregen:
+          type: boolean
+    ZakelijkGerechtigde:
+      type: object
+      properties:
+        identificatie:
+          type: string
+        type:
+          $ref: "#/components/schemas/TypeGerechtigde_enum"
+        aanvangsdatum:
+          type: string
+          format: date
+    ZakelijkGerechtigdeCollection:
+      type: array
+      items:
+        $ref: "#/components/schemas/ZakelijkGerechtigde"

@@ -1,0 +1,1 @@
+avrogen -s ../../../../specificaties/kafka/brk.avsc .

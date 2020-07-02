@@ -1,0 +1,243 @@
+openapi: 3.0.0
+info:
+  title: "BRK Kadastraal Onroerende Zaken API"
+  version: "1.0.0"
+paths:
+  /kadastraalonroerendezaken:
+    get:
+      operationId: ZoekKadastraalOnroerendeZaken
+      responses:
+        200:
+          description: Kadastraal Onroerende Zaken zoeken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KadastraalOnroerendeZaken"
+      tags:
+        - KadastraalOnroerendeZaken
+    post:
+      operationId: CreerKadastraalOnroerendeZaak
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KadastraalOnroerendeZaakMetZakelijkGerechtigdenNieuw"
+      responses:
+        200:
+          description: Kadastraal Onroerende Zaak aangemaakt
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KadastraalOnroerendeZaak"
+      tags:
+        - KadastraalOnroerendeZaken
+  /kadastraalonroerendezaken/{kadastraalOnroerendeZaakIdentificatie}:
+    put:
+      operationId: VervangKadastraalOnroerendeZaak
+      parameters:
+        - in: path
+          name: kadastraalOnroerendeZaakIdentificatie
+          description: De unieke identificatie van een kadastraal onroerende zaak
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KadastraalOnroerendeZaakNieuw"
+      responses:
+        200:
+          description: Kadastraal Onroerende Zaak vervangen
+      tags:
+        - KadastraalOnroerendeZaken
+  /kadastraalonroerendezaken/{kadastraalOnroerendeZaakIdentificatie}/zakelijkgerechtigden:
+    post:
+      operationId: CreerZakelijkGerechtigde
+      parameters:
+        - in: path
+          name: kadastraalOnroerendeZaakIdentificatie
+          description: De unieke identificatie van een kadastraal onroerende zaak
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZakelijkGerechtigdeNieuw"
+      responses:
+        200:
+          description: Zakelijk Gerechtigde aangemaakt
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ZakelijkGerechtigde"
+      tags:
+        - ZakelijkGerechtigden
+  /kadastraalonroerendezaken/{kadastraalOnroerendeZaakIdentificatie}/zakelijkgerechtigden/{zakelijkGerechtigdeIdentificatie}:
+    put:
+      operationId: VervangZakelijkGerechtigde
+      parameters:
+        - in: path
+          name: kadastraalOnroerendeZaakIdentificatie
+          description: De unieke identificatie van een kadastraal onroerende zaak
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: zakelijkGerechtigdeIdentificatie
+          description: De unieke identificatie van een zakelijk gerechtigde
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZakelijkGerechtigdeNieuw"
+      responses:
+        200:
+          description: Zakelijk gerechtigde vervangen
+      tags:
+        - ZakelijkGerechtigden
+components:
+  schemas:
+    KadastraalOnroerendeZaken:
+      type: array
+      items:
+        $ref: "#/components/schemas/KadastraalOnroerendeZaak"
+    KadastraalOnroerendeZaak:
+      type: object
+      properties:
+        identificatie:
+          type: string
+        kadastraleAanduiding:
+          type: string
+        type:
+          $ref: "#/components/schemas/TypeKadastraalOnroerendeZaak_enum"
+        koopsom:
+          $ref: "#/components/schemas/TypeKoopsom"
+        zakelijkGerechtigden:
+          $ref: "#/components/schemas/ZakelijkGerechtigdeCollection"
+    KadastraalOnroerendeZaakNieuw:
+      type: object
+      properties:
+        kadastraleAanduiding:
+          $ref: "#/components/schemas/TypeKadastraleAanduiding"
+        type:
+          $ref: "#/components/schemas/TypeKadastraalOnroerendeZaak_enum"
+        koopsom:
+          $ref: "#/components/schemas/TypeKoopsom"
+    KadastraalOnroerendeZaakMetZakelijkGerechtigdenNieuw:
+      allOf:
+        - $ref: "#/components/schemas/KadastraalOnroerendeZaakNieuw"
+      properties:
+        zakelijkGerechtigden:
+          $ref: "#/components/schemas/ZakelijkGerechtigdeNieuwCollection"
+    TypeGerechtigde_enum:
+      type: string
+      description: "Het type zakelijk recht dat deze gerechtigde heeft. Afgeleid van de aard zakelijk recht:\n
+      * `beklemrechthouder` - 1 Beklemrechthouder\n
+      * `eigenaar` - 2 Eigenaar\n
+      * `erfpachter` - 3 Erfpachter\n
+      * `gebruik_bewoning` - 4 Rechthebbende van Gebruik en bewoning\n
+      * `grondrente` - 5 Grondrente gerechtigde\n
+      * `opstalhouder` - 7 Opstalhouder\n
+      * `vaderlandsrecht` - 9 Rechthebbende van Oud-vaderlandsrecht\n
+      * `stadsmeierrecht` - 11 Rechthebbende van Stadsmeierrecht\n
+      * `vruchtgebruiker` - 12 Vruchtgebruiker\n
+      * `erfpachter_opstalhouder` - 13 Erfpachter en opstalhouder\n
+      * `nutsvoorzieningen` - 14 Opstalhouder nutsvoorzieningen\n
+      * `twee_belastingen` - 20 Zakelijk Rechthebbende na twee of meer zakelijke belastingen\n
+      * `belasting_derde` - 21 Zakelijk rechthebbende belasting derde of volgende\n
+      * `bp_recht` - 22 BP-gerechtigde\n
+      * `nutsvoorzieningen_gedeelte` - 23 Opstalhouder Nutsvoorzieningen op gedeelte van perceel\n
+      * `artikel5_3b` - 24 Zakelijk gerechtigde als bedoeld in artikel 5, lid 3, onder b, van de Belemmeringenwet Privaatrecht op gedeelte van perceel"
+      enum:
+        - "beklemrechthouder"
+        - "eigenaar"
+        - "erfpachter"
+        - "gebruik_bewoning"
+        - "grondrente"
+        - "opstalhouder"
+        - "vaderlandsrecht"
+        - "stadsmeierrecht"
+        - "vruchtgebruiker"
+        - "erfpachter_opstalhouder"
+        - "nutsvoorzieningen"
+        - "twee_belastingen"
+        - "belasting_derde"
+        - "bp_recht"
+        - "nutsvoorzieningen_gedeelte"
+        - "artikel5_3b"
+    TypeKadastraalOnroerendeZaak_enum:
+      type: string
+      enum:
+      - "appartementsrecht"
+      - "perceel"
+    TypeKadastraleAanduiding:
+      type: object
+      properties:
+        appartementsrechtVolgnummer:
+          description: |
+            Nummer dat het kadastraal object uniek identificeert als een 
+            appartementsrecht binnen het complex.
+          type: integer
+        kadastraleGemeenteCode:
+          description: |
+            De kadastrale gemeente, deel van de kadastrale aanduiding van de onroerende zaak.  
+            De waarden komen uit een Waardelijst( http://www.kadaster.nl/schemas/waardelijsten/KadastraleGemeente).
+            Elke kadastrale gemeentenaam is uniek.
+          type: integer
+        perceelnummer:
+          description: |
+            Het perceelnummer dat een geheel perceel of een complex uniek 
+            identificeert binnen de sectie. Per kadastrale gemeente en per sectie 
+            heeft een perceel een perceelnummer oplopend door de jaren heen.
+          type: integer
+          minimum: 1
+          maximum: 99999
+        sectie:
+          description: |
+            Sectie is een onderverdeling van de kadastrale gemeente, bedoeld 
+            om het werk van de meetdienst en de kadastrale kaarten overzichtelijk 
+            te houden. Per kadastrale gemeente zijn er max. 26x26 secties . Elke 
+            sectie heeft een of twee letters
+          type: string
+          maxLength: 2
+    TypeKoopsom:
+      type: object
+      properties:
+        koopsom:
+          type: integer
+        koopjaar:
+          type: integer
+        indicatieMetMeerObjectenVerkregen:
+          type: boolean
+    ZakelijkGerechtigde:
+      allOf:
+      - $ref: "#/components/schemas/ZakelijkGerechtigdeNieuw"
+      properties:
+        identificatie:
+          type: string
+    ZakelijkGerechtigdeCollection:
+      type: array
+      items:
+        $ref: "#/components/schemas/ZakelijkGerechtigde"
+    ZakelijkGerechtigdeNieuw:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/TypeGerechtigde_enum"
+        aanvangsdatum:
+          type: string
+          format: date
+    ZakelijkGerechtigdeNieuwCollection:
+      type: array
+      items:
+        $ref: "#/components/schemas/ZakelijkGerechtigdeNieuw"
