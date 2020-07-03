@@ -8,28 +8,12 @@ paths:
   /abonnement/kadastraalonroerendezaakevents:
     get:
       description: "Ophalen van nieuwe kadastraal onroerende zaak events.  \nHet resultaat\
-        \ kan worden gefilterd op basis van\n- één of meerdere topics\n- de van tijdstip\n\
-        - de van en tot tijdstip\n\nMet de expand parameter wordt aangegeven of de\
-        \ vorige toestand van de kadastraal onroerende zaak moet worden opgehaald\n"
+        \ kan worden gefilterd op basis van\n- de **vanafTijdstip** tijdstip of\n\
+        - de event met de **vanafEventIdentificatie** identificatie\n\nMet de **inclusiefVorigToestand**\
+        \ parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende\
+        \ zaak moet worden opgehaald\n"
       parameters:
-      - name: topics
-        in: query
-        required: false
-        style: form
-        explode: false
-        schema:
-          type: array
-          items:
-            type: string
-      - name: van
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          format: date-time
-      - name: tot
+      - name: vanafTijdstip
         in: query
         required: false
         style: form
@@ -37,6 +21,13 @@ paths:
         schema:
           type: string
           format: date-time
+      - name: vanafEventIdentificatie
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       - name: inclusiefVorigToestand
         in: query
         required: false
@@ -56,16 +47,14 @@ paths:
     get:
       description: |
         Ophalen van kadastraal onroerende zaak events op basis van
-        - kadastraalonroerendezaakidentificatie
-        - stukidentificatie
-        - zakelijkgerechtigdeidentificatie
-        - kadastraleaanduiding
-        - de van tijdstip
-        - de van en tot tijdstip
+        - kadastraalonroerendezaakidentificatie of
+        - stukidentificatie of
+        - zakelijkgerechtigdeidentificatie of
+        - kadastraleaanduiding en
+        - de **vanafTijdstip** tijdstip of
+        - de event met de **vanafEventIdentificatie** identificatie
 
-        Verplicht: Eén van de drie identificatie parameters of de kadastrale aanduiding parameter
-
-        Met de expand parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
+        Met de **inclusiefVorigToestand** parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
       parameters:
       - name: kadastraalonroerendezaakidentificatie
         in: query
@@ -104,7 +93,7 @@ paths:
             A[1-9][0-9]{0,3})?$
           type: string
           example: '''s Gravenhage C 1277 A3'
-      - name: van
+      - name: vanafTijdstip
         in: query
         required: false
         style: form
@@ -112,14 +101,13 @@ paths:
         schema:
           type: string
           format: date-time
-      - name: tot
+      - name: vanafEventIdentificatie
         in: query
         required: false
         style: form
         explode: true
         schema:
           type: string
-          format: date-time
       - name: inclusiefVorigToestand
         in: query
         required: false
@@ -167,9 +155,21 @@ paths:
 components:
   schemas:
     KadastraalOnroerendeZaakEvents:
-      type: array
-      items:
-        $ref: '#/components/schemas/KadastraalOnroerendeZaakEvent'
+      type: object
+      properties:
+        volgendEventIdentificatie:
+          type: string
+          description: "De identificatie van het volgende event.  \nDeze bevat geen\
+            \ waarde als er op het moment van de bevraging geen volgende events zijn\n"
+        volgendeEventsLink:
+          type: string
+          description: |
+            De url waarmee de volgende events vanaf de event met identificatie = volgendEventIdentificatie kan worden bevraagd.
+            Deze bevat geen waarde als er op het moment van de bevraging geen volgende events zijn
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/KadastraalOnroerendeZaakEvent'
     KadastraalOnroerendeZaakEvent:
       type: object
       properties:

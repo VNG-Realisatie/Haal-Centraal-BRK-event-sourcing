@@ -8,32 +8,22 @@ paths:
       description: |
         Ophalen van nieuwe kadastraal onroerende zaak events.  
         Het resultaat kan worden gefilterd op basis van
-        - één of meerdere topics
-        - de van tijdstip
-        - de van en tot tijdstip
+        - de **vanafTijdstip** tijdstip of
+        - de event met de **vanafEventIdentificatie** identificatie
 
-        Met de expand parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
+        Met de **inclusiefVorigToestand** parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
       parameters:
-        - name: topics
-          in: query
-          required: false
-          explode: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: van
-          in: query
-          required: true
-          schema:
-            type: string
-            format: date-time
-        - name: tot
+        - name: vanafTijdstip
           in: query
           required: false
           schema:
             type: string
             format: date-time
+        - name: vanafEventIdentificatie
+          in: query
+          required: false
+          schema:
+            type: string
         - name: inclusiefVorigToestand
           in: query
           required: false
@@ -51,16 +41,14 @@ paths:
     get:
       description: |
         Ophalen van kadastraal onroerende zaak events op basis van
-        - kadastraalonroerendezaakidentificatie
-        - stukidentificatie
-        - zakelijkgerechtigdeidentificatie
-        - kadastraleaanduiding
-        - de van tijdstip
-        - de van en tot tijdstip
+        - kadastraalonroerendezaakidentificatie of
+        - stukidentificatie of
+        - zakelijkgerechtigdeidentificatie of
+        - kadastraleaanduiding en
+        - de **vanafTijdstip** tijdstip of
+        - de event met de **vanafEventIdentificatie** identificatie
 
-        Verplicht: Eén van de drie identificatie parameters of de kadastrale aanduiding parameter
-        
-        Met de expand parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
+        Met de **inclusiefVorigToestand** parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
       parameters:
         - name: kadastraalonroerendezaakidentificatie
           in: query
@@ -90,18 +78,17 @@ paths:
             type: string
             pattern: "^([a-zA-Z0-9'][a-zA-Z0-9' ,-]*[a-zA-Z0-9]) ([A-IK-Z]{1,2}) ([1-9][0-9]{0,4})( A[1-9][0-9]{0,3})?$"
             example: "'s Gravenhage C 1277 A3"
-        - name: van
+        - name: vanafTijdstip
           in: query
           required: false
           schema:
             type: string
             format: date-time
-        - name: tot
+        - name: vanafEventIdentificatie
           in: query
           required: false
           schema:
             type: string
-            format: date-time
         - name: inclusiefVorigToestand
           in: query
           required: false
@@ -143,9 +130,22 @@ paths:
 components:
   schemas:
     KadastraalOnroerendeZaakEvents:
-      type: array
-      items:
-        $ref: "#/components/schemas/KadastraalOnroerendeZaakEvent"
+      type: object
+      properties:
+        volgendEventIdentificatie:
+          description: |
+            De identificatie van het volgende event.  
+            Deze bevat geen waarde als er op het moment van de bevraging geen volgende events zijn
+          type: string
+        volgendeEventsLink:
+          description: |
+            De url waarmee de volgende events vanaf de event met identificatie = volgendEventIdentificatie kan worden bevraagd.
+            Deze bevat geen waarde als er op het moment van de bevraging geen volgende events zijn
+          type: string
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/KadastraalOnroerendeZaakEvent"
     KadastraalOnroerendeZaakEvent:
       type: object
       description: |
