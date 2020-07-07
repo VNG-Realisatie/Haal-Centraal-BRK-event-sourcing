@@ -7,6 +7,6 @@ namespace KadastraalOnroerendeZakenEvents.API.Repositories
     public interface IKozTpoRepository
     {
         Task<bool> Add(KozTpo kozTpo);
-        Task<IEnumerable<KozTpo>> GetAsync(long id);
+        Task<List<KozTpo>> GetAsync(long id);
     }
 }

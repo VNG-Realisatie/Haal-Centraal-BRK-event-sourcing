@@ -23,7 +23,7 @@ namespace KadastraalOnroerendeZakenEvents.API.Repositories
             return (await context.SaveChangesAsync() > 0);
         }
 
-        public async Task<IEnumerable<KozTpo>> GetAsync(long id)
+        public async Task<List<KozTpo>> GetAsync(long id)
         {
             return await context.KozTpos.AsNoTracking()
                                         .Where(x => x.KozId == id)

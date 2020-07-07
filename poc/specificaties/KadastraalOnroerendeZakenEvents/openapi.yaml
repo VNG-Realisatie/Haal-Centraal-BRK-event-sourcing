@@ -1,21 +1,21 @@
 openapi: 3.0.0
 info:
-  title: "BRK events bevragen API"
+  title: "BRK event sourcing bevragen API"
   version: "1.0.0"
 paths:
   /abonnement/kadastraalonroerendezaakevents:
     get:
       operationId: ZoekKadastraalOnroerendeZaakEventsInAbonnement
       description: |-
-        Ophalen van nieuwe kadastraal onroerende zaak events.  
+        Ophalen van nieuwe kadastraal onroerende zaak events op basis van abonnement.  
         Het resultaat kan worden gefilterd op basis van
         - de **vanafTijdstip** tijdstip of
         - de event met de **vanafEventIdentificatie** identificatie
 
         Met de **inclusiefVorigToestand** parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
       parameters:
-        - in: header
-          name: abonnementIdentificatie
+        - name: abonnementIdentificatie
+          in: header
           required: true
           schema:
             type: string
@@ -30,6 +30,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: maxAantalEvents
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 1
         - name: inclusiefVorigToestand
           in: query
           required: false
@@ -52,7 +60,7 @@ paths:
         Ophalen van kadastraal onroerende zaak events op basis van
         - de kadastraalonroerendezaakidentificatie en
         - de **vanafTijdstip** tijdstip of
-        - de event met de **vanafEventIdentificatie** identificatie
+        - vanaf de event met de **vanafEventIdentificatie** identificatie
 
         Met de **inclusiefVorigToestand** parameter wordt aangegeven of de vorige toestand van de kadastraal onroerende zaak moet worden opgehaald
       parameters:
@@ -72,6 +80,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: maxAantalEvents
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 1
         - name: inclusiefVorigToestand
           in: query
           required: false

@@ -19,7 +19,7 @@ namespace KadastraalOnroerendeZakenEvents.API.Contracts
     {
         /// <returns>events gevonden</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("abonnement/kadastraalonroerendezaakevents")]
-        public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<KadastraalOnroerendeZaakEvent>>> ZoekKadastraalOnroerendeZaakEventsInAbonnement([Microsoft.AspNetCore.Mvc.FromHeader] string abonnementIdentificatie, [Microsoft.AspNetCore.Mvc.FromQuery] System.DateTimeOffset? van, [Microsoft.AspNetCore.Mvc.FromQuery] bool? inclusiefVorigToestand = false);
+        public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<KadastraalOnroerendeZaakEvents>> ZoekKadastraalOnroerendeZaakEventsInAbonnement([Microsoft.AspNetCore.Mvc.FromHeader] string abonnementIdentificatie, [Microsoft.AspNetCore.Mvc.FromQuery] System.DateTimeOffset? vanafTijdstip, [Microsoft.AspNetCore.Mvc.FromQuery] string vanafEventIdentificatie, [Microsoft.AspNetCore.Mvc.FromQuery] int? maxAantalEvents = 1, [Microsoft.AspNetCore.Mvc.FromQuery] bool? inclusiefVorigToestand = false);
     
     }
     
@@ -28,7 +28,7 @@ namespace KadastraalOnroerendeZakenEvents.API.Contracts
     {
         /// <returns>events gevonden</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("kadastraalonroerendezaakevents")]
-        public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.ICollection<KadastraalOnroerendeZaakEvent>>> ZoekKadastraalOnroerendeZaakEvents([Microsoft.AspNetCore.Mvc.FromQuery] string kadastraalonroerendezaakidentificatie, [Microsoft.AspNetCore.Mvc.FromQuery] System.DateTimeOffset? van, [Microsoft.AspNetCore.Mvc.FromQuery] bool? inclusiefVorigToestand = false);
+        public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<KadastraalOnroerendeZaakEvents>> ZoekKadastraalOnroerendeZaakEvents([Microsoft.AspNetCore.Mvc.FromQuery] string kadastraalOnroerendeZaakIdentificatie, [Microsoft.AspNetCore.Mvc.FromQuery] System.DateTimeOffset? vanafTijdstip, [Microsoft.AspNetCore.Mvc.FromQuery] string vanafEventIdentificatie, [Microsoft.AspNetCore.Mvc.FromQuery] int? maxAantalEvents = 1, [Microsoft.AspNetCore.Mvc.FromQuery] bool? inclusiefVorigToestand = false);
     
         /// <returns>event gevonden</returns>
         [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("kadastraalonroerendezaakevents/{identificatie}")]
@@ -37,8 +37,32 @@ namespace KadastraalOnroerendeZakenEvents.API.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class KadastraalOnroerendeZaakEvents : System.Collections.ObjectModel.Collection<KadastraalOnroerendeZaakEvent>
+    public partial class KadastraalOnroerendeZaakEvents 
     {
+        /// <summary>De identificatie van het volgende event.  
+        /// Deze bevat geen waarde als er op het moment van de bevraging geen volgende events zijn
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("volgendEventIdentificatie", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string VolgendEventIdentificatie { get; set; }
+    
+        /// <summary>De url waarmee de volgende events vanaf de event met identificatie = volgendEventIdentificatie kan worden bevraagd.
+        /// Deze bevat geen waarde als er op het moment van de bevraging geen volgende events zijn
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("volgendeEventsLink", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string VolgendeEventsLink { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("events", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<KadastraalOnroerendeZaakEvent> Events { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
     
     }
     

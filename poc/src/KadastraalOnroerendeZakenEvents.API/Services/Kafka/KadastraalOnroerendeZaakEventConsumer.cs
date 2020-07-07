@@ -25,9 +25,17 @@ namespace KadastraalOnroerendeZakenEvents.API.Services.Kafka
             this.mapper = mapper;
         }
 
-        public IEnumerable<Contracts.KadastraalOnroerendeZaakEvent> Consume(string consumerId, IEnumerable<string> topics, DateTimeOffset? van, bool includeVorigToestand)
+        public Contracts.KadastraalOnroerendeZaakEvents Consume(string consumerId,
+                                                                IEnumerable<string> topics,
+                                                                DateTimeOffset? van,
+                                                                string vanafEventIdentificatie,
+                                                                int maxAantalEvents,
+                                                                bool includeVorigToestand)
         {
-            var retval = new List<Contracts.KadastraalOnroerendeZaakEvent>();
+            var retval = new Contracts.KadastraalOnroerendeZaakEvents
+            {
+                Events = new List<Contracts.KadastraalOnroerendeZaakEvent>()
+            };
 
             var config = GetConsumerConfig(consumerId);
             var schemaRegistryConfig = GetSchemaRegistryConfig();
@@ -37,7 +45,7 @@ namespace KadastraalOnroerendeZakenEvents.API.Services.Kafka
                 .SetValueDeserializer(new AvroDeserializer<Kadaster.KadastraalOnroerendeZaakEvent>(schemaRegistry).AsSyncOverAsync())
                 .Build())
             {
-                consumer.SetSubscription(topics, van, logger);
+                consumer.SetSubscription(topics, van, vanafEventIdentificatie, logger);
 
                 while (true)
                 {
@@ -49,6 +57,12 @@ namespace KadastraalOnroerendeZakenEvents.API.Services.Kafka
                     }
 
                     var data = mapper.Map<Contracts.KadastraalOnroerendeZaakEvent>(result);
+                    if(retval.Events.Count >= maxAantalEvents)
+                    {
+                        retval.VolgendEventIdentificatie = data.Identificatie;
+                        break;
+                    }
+
                     if (includeVorigToestand &&
                         !string.IsNullOrWhiteSpace(result.Message.Value.VorigEventIdentificatie))
                     {
@@ -56,7 +70,7 @@ namespace KadastraalOnroerendeZakenEvents.API.Services.Kafka
                             Consume(result.Message.Value.VorigEventIdentificatie).NieuweToestandKadastraalOnroerendeZaak;
                     }
 
-                    retval.Add(data);
+                    retval.Events.Add(data);
                 }
 
                 consumer.Close();

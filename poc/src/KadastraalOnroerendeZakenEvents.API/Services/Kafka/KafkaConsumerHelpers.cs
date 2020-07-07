@@ -13,6 +13,7 @@ namespace KadastraalOnroerendeZakenEvents.API.Services.Kafka
         public static void SetSubscription(this IConsumer<string, Kadaster.KadastraalOnroerendeZaakEvent> consumer,
                                            IEnumerable<string> topics,
                                            DateTimeOffset? van,
+                                           string vanafEventIdentificatie,
                                            ILogger logger)
         {
             if (van.HasValue)
@@ -24,21 +25,32 @@ namespace KadastraalOnroerendeZakenEvents.API.Services.Kafka
                                                         new Timestamp(van.Value.UtcDateTime))).ToList();
                 var offsets = consumer.OffsetsForTimes(timesForTopics, TimeSpan.FromSeconds(5));
 
-                foreach (var offset in offsets)
-                {
-                    try
-                    {
-                        consumer.Assign(offset);
-                    }
-                    catch (KafkaException ex)
-                    {
-                        logger.LogError(ex, $"Assign({offset}) throws an exception");
-                    }
-                }
+                consumer.Assign(offsets, logger);
+            }
+            else if (!string.IsNullOrWhiteSpace(vanafEventIdentificatie))
+            {
+                consumer.Assign(new[] { vanafEventIdentificatie.ParseIdentificatie().ToTopicPartitionOffset() }, logger);
             }
             else
             {
                 consumer.Subscribe(topics);
+            }
+        }
+
+        private static void Assign(this IConsumer<string, Kadaster.KadastraalOnroerendeZaakEvent> consumer,
+                                   IEnumerable<TopicPartitionOffset> offsets,
+                                   ILogger logger)
+        {
+            foreach (var offset in offsets)
+            {
+                try
+                {
+                    consumer.Assign(offset);
+                }
+                catch (KafkaException ex)
+                {
+                    logger.LogError(ex, $"Assign({offset}) throws an exception");
+                }
             }
         }
 
@@ -87,6 +99,11 @@ namespace KadastraalOnroerendeZakenEvents.API.Services.Kafka
             return (match.Groups["topic"].Value,
                     int.Parse(match.Groups["partition"].Value),
                     long.Parse(match.Groups["offset"].Value));
+        }
+
+        private static TopicPartitionOffset ToTopicPartitionOffset(this ValueTuple<string, int, long> input)
+        {
+            return new TopicPartitionOffset(input.Item1, input.Item2, input.Item3);
         }
     }
 }
