@@ -1,0 +1,20 @@
+{
+  "name": "Haal-Centraal-BRK-event-sourcing",
+  "version": "1.0.0",
+  "description": "* BRK events bevragen API: [Technische specificaties](specificatie/BRK-Events) (Open API Specificaties) en ook in [Swagger-formaat](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-events/master/specificatie/genereervariant/openapi.yaml)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/issues"
+  },
+  "homepage": "https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing#readme"
+}
