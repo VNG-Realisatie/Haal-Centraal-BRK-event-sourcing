@@ -15,7 +15,7 @@ servers:
   development:
     url: localhost
     description: Development server
-    protocol: ws
+    protocol: kafka
 channels:
   kadastraalOnroerendeZaakEvents/gemeente/{gemeenteCode}:
     parameters:
