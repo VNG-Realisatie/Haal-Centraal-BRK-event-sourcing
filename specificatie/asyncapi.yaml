@@ -15,7 +15,7 @@ servers:
   development:
     url: localhost
     description: Development server
-    protocol: https
+    protocol: ws
 channels:
   kadastraalOnroerendeZaakEvents/gemeente/{gemeenteCode}:
     parameters:
