@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/issues"
   },
-  "homepage": "https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing#readme"
+  "homepage": "https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing#readme",
+  "devDependencies": {
+    "@asyncapi/generator": "^1.0.0-rc.13"
+  }
 }
