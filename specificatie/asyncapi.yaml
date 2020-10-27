@@ -1,0 +1,47 @@
+asyncapi: 2.0.0
+info:
+  title: test
+  description: async api test
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: https://www.asyncapi.org/support
+    email: support@asyncapi.org
+  license:
+    name: Apache 2.0
+tags:
+    - name: asyncapi
+servers:
+  development:
+    url: localhost
+    description: Development server
+    protocol: https
+channels:
+  kadastraalOnroerendeZaakEvents/gemeente/{gemeenteCode}:
+    parameters:
+        gemeenteCode:
+          description: gemeente code
+          schema:
+            type: string
+    subscribe:
+      operationId: OnKadastraalOnroerendeZaakGewijzigd
+      summary: test
+      description: test
+      message:
+        $ref: '#/components/messages/KadastraalOnroerendeZaakEvent'
+components:
+  messages:
+    KadastraalOnroerendeZaakEvent:
+      payload:
+        type: object
+        properties:
+          identificatie:
+            description: unieke identifier van een kadastraal onroerende zaak event
+            type: string
+          tijdstip:
+            description: creatie tijdstip van event
+            type: string
+            format: date-time
+          indicatieStukCompleet:
+            description: true als alle stukdelen behorende bij de stuk aanwezig zijn t.b.v. het beoordelen van samenhangend geheel
+            type: boolean
