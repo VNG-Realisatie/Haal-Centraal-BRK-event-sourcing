@@ -1,12 +1,14 @@
 asyncapi: 2.0.0
 info:
-  title: test
-  description: async api test
+  title: BRK events API
+  description: |
+    De BRK events API maakt het mogelijk om notificaties te ontvangen
+    wanneer Kadastraal Onroerende Zaken in een gemeente zijn gewijzigd.
   version: 1.0.0
   contact:
-    name: API Support
-    url: https://www.asyncapi.org/support
-    email: support@asyncapi.org
+    name: Kadaster Support
+    url: https://www.kadaster.nl/support
+    email: support@kadaster.nl
   license:
     name: Apache 2.0
 tags:
@@ -15,18 +17,18 @@ servers:
   development:
     url: localhost
     description: Development server
-    protocol: kafka
+    protocol: https
+defaultContentType: application/json
 channels:
-  kadastraalOnroerendeZaakEvents/gemeente/{gemeenteCode}:
+  brk/kadastraalOnroerendeZaakGewijzigdEvents/gemeente/{gemeenteCode}:
     parameters:
         gemeenteCode:
-          description: gemeente code
+          description: gemeente code van kadastraal onroerende zaken waarvan u gewijzigd events wilt ontvangen
           schema:
             type: string
     subscribe:
-      operationId: OnKadastraalOnroerendeZaakGewijzigd
-      summary: test
-      description: test
+      operationId: OntvangKadastraalOnroerendeZaakGewijzigdInGemeente
+      description: Ontvang gewijzigd events van kadastraal onroerende zaken binnen een gemeente
       message:
         $ref: '#/components/messages/KadastraalOnroerendeZaakEvent'
 components:
@@ -36,7 +38,7 @@ components:
         type: object
         properties:
           identificatie:
-            description: unieke identifier van een kadastraal onroerende zaak event
+            description: unieke identifier van een kadastraal onroerende zaak gewijzigd event
             type: string
           tijdstip:
             description: creatie tijdstip van event
@@ -45,3 +47,12 @@ components:
           indicatieStukCompleet:
             description: true als alle stukdelen behorende bij de stuk aanwezig zijn t.b.v. het beoordelen van samenhangend geheel
             type: boolean
+          nieuweToestand:
+            $ref: '#/components/schemas/KadastraalOnroerendeZaak'
+  schemas:
+    KadastraalOnroerendeZaak:
+      type: object
+      properties: 
+        identificatie:
+          description: unieke identifier van een kadastraal onroerende zaak
+          type: string
