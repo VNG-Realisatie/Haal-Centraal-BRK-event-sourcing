@@ -2,4 +2,4 @@
 
 ## Documentatie
 
-* BRK events bevragen API: [Technische specificaties](specificatie/BRK-Events) (Open API Specificaties) en ook in [Swagger-formaat](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-events/master/specificatie/genereervariant/openapi.yaml)
+* BRK events bevragen API: [Technische specificaties](./specificatie) (Open API Specificaties), ook te bekijken in [Swagger-UI](./swagger-ui) en [redoc](./redoc)
