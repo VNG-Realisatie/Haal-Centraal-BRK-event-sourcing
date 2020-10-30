@@ -4,6 +4,11 @@
   "description": "* BRK events bevragen API: [Technische specificaties](specificatie/BRK-Events) (Open API Specificaties) en ook in [Swagger-formaat](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-events/master/specificatie/genereervariant/openapi.yaml)",
   "main": "index.js",
   "scripts": {
+    "oas:lint": "spectral lint ./specificatie/openapi.yaml",
+    "oas:lint-genereervariant": "spectral lint ./specificatie/genereervariant/openapi.yaml",
+    "preoas:resolve": "mvn-dl io.swagger.codegen.v3:swagger-codegen-cli:3.0.19 -f swagger-codegen-cli.jar",
+    "oas:resolve": "java -jar swagger-codegen-cli.jar generate -i ./specificatie/openapi.yaml -l openapi-yaml -o ./specificatie/genereervariant && java -jar swagger-codegen-cli.jar generate -i ./specificatie/openapi.yaml -l openapi -o ./specificatie/genereervariant",
+    "postoas:resolve": "rm swagger-codegen-cli.jar",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +23,14 @@
   },
   "homepage": "https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing#readme",
   "devDependencies": {
-    "@asyncapi/generator": "^1.0.0-rc.13"
+    "@asyncapi/generator": "^1.0.0-rc.13",
+    "@stoplight/spectral": "^5.6.0",
+    "husky": "^4.3.0",
+    "mvn-dl": "^5.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run oas:lint && npm run oas:resolve && npm run oas:lint-genereervariant && git checkout ./specificatie/genereervariant/openapi.*"
+    }
   }
 }
