@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: page-with-side-nav
 title: BRK Event Sourcing
 ---
 # BRK Event Sourcing
