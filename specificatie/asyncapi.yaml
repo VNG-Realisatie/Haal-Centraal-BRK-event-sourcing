@@ -1,8 +1,8 @@
 asyncapi: 2.0.0
 info:
-  title: BRK events API
+  title: BRK event notificatie API
   description: |
-    De BRK events API maakt het mogelijk om notificaties te ontvangen
+    De BRK event notificatie API maakt het mogelijk om notificaties te ontvangen
     wanneer Kadastraal Onroerende Zaken in een gemeente zijn gewijzigd.
   version: 1.0.0
   contact:
