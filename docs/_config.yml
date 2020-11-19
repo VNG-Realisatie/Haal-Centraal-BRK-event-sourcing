@@ -1,2 +1,3 @@
 baseurl: "/Haal-Centraal-BRK-event-sourcing"
+apiname: "BRK Event Sourcing"
 url: "http://localhost:4000"
