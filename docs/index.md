@@ -10,7 +10,7 @@ title: BRK Event Sourcing
 De WOZ- en Erfpachtregistratie zijn grotendeels gebaseerd op de basisregistratie kadaster (BRK). Bijna iedere verandering van een kadastrale onroerende zaak leidt tot een verandering in de WOZ- en erfpachtregistratie. Daarom halen gemeenten wijzigingen op bij het kadaster en leggen een lokale kopie met historie aan. Dat kost veel energie, tijd en geld, en gaat niet altijd goed. Het kan niet anders, omdat gemeenten met terugwerkende kracht correcties moeten doen. Bijvoorbeeld n.a.v. een bezwaar. 
 
 Door alle BRK gebeurtenissen op te slaan als onveranderlijke opeenvolgende feiten of EVENTS, net als de financiële feiten in een grootboek, kunnen gemeenten met een Publish Subscribe API worden genotificeerd op het moment dat zo’n event plaatsvindt, en met een REST API deze events opzoeken en raadplegen. Voordelen van een centrale event log:
-1. de lokale BRK kopie is niet meer nodig;
+1. de lokale kopie is niet meer nodig;
 2. “loose coupling” tussen de aanbieder en abonnees, omdat het leveren en bevragen van events onafhankelijk van elkaar gebeurt;
 3. tijdreizen wordt gemakkelijk. Handig voor het ophalen en opnieuw afspelen van kadasterevents na herziening van WOZ object in het verleden. Zo kun je het object na correctie opnieuw bijwerken tot de actuele status;
 4. uitbesteden aan een belastingsamenwerking en wisselen van softwareleverancier wordt gemakkelijker: de nieuwe partij hoeft alleen de BRK (en BAG) events van de gemeente vanaf een bepaald tijdstip op te halen om nieuwe WOZ objecten voor de gemeente te kunnen produceren.
