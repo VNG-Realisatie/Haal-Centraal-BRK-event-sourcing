@@ -5,7 +5,7 @@ title: BRK Event Sourcing
 # BRK Event Sourcing
 
 ![lint oas](https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/workflows/lint-oas/badge.svg)
-## Let op! wordt nog niet door het Kadaster aangeboden!
+## Let op! Wordt nog niet door het Kadaster aangeboden!
 
 De WOZ- en Erfpachtregistratie zijn grotendeels gebaseerd op de basisregistratie kadaster (BTK). Bijna iedere verandering van een kadastrale onroerende zaak leidt tot een verandering in de basisregistratie WOZ. Gemeenten halen daarvoor wijzigingen bij het kadaster op leggen daarmee een lokale kopie met historie aan. Dat kost veel energie, tijd en geld, en gaat niet altijd goed. 
 
