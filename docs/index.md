@@ -15,7 +15,7 @@ Door alle BRK gebeurtenissen op te slaan als onveranderlijke opeenvolgende feite
 3. tijdreizen wordt gemakkelijk. Handig voor het ophalen en opnieuw afspelen van kadasterevents na herziening van WOZ object in het verleden. Zo kun je het object na correctie opnieuw bijwerken tot de actuele status;
 4. uitbesteden aan een belastingsamenwerking en wisselen van softwareleverancier wordt gemakkelijker: de nieuwe partij hoeft alleen de BRK (en BAG) events van de gemeente vanaf een bepaald tijdstip op te halen om nieuwe WOZ objecten voor de gemeente te kunnen produceren.
 
-## Direct aan de slag?
+## Direct mee experimenteren?
 * Bekijk de Events Bevragen API specificaties met [Swagger UI](https://vng-realisatie.github.io/Haal-Centraal-BRK-event-sourcing/swagger-ui) of [Redoc](https://vng-realisatie.github.io/Haal-Centraal-BRK-event-sourcing/redoc)
 * Bekijk de Notificaties API specificaties met [AsyncAPI playground](https://playground.asyncapi.io/?load=https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/master/specificatie/asyncapi.yaml) 
 
@@ -32,6 +32,6 @@ Gebruik de API in combinatie met de andere BRK API’s:
 
 ## Licentie
 
-Copyright &copy; VNG Realisatie 2018
+Copyright &copy; VNG Realisatie 2020
 Licensed under the [EUPL](https://github.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/blob/master/LICENCE.md){:target="_blank" rel="noopener"}
 
