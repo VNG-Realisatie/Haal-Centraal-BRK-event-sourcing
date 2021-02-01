@@ -18,7 +18,7 @@ nav:
 #      - title: Getting started
 #        path: /getting-started
       - title: User stories
-        url: https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/issues?q=label%3A%22user+story%22
+        url: https://vng-realisatie.github.io/Haal-Centraal-BRK-event-sourcing/user-stories-dev
         path: /user-stories
         target: blank
       - title: Bevragen API (swagger-ui)
