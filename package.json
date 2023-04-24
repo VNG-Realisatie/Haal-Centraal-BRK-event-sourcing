@@ -25,7 +25,7 @@
   "devDependencies": {
     "@asyncapi/generator": "^1.1.4",
     "@stoplight/spectral": "^6.1.0",
-    "husky": "^4.3.7",
+    "husky": "^8.0.3",
     "mvn-dl": "^2.0.1"
   },
   "husky": {
