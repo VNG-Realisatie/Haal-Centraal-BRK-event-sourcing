@@ -23,14 +23,8 @@
   },
   "homepage": "https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing#readme",
   "devDependencies": {
-    "@asyncapi/generator": "^1.1.4",
-    "@stoplight/spectral": "^6.1.0",
-    "husky": "^4.3.7",
-    "mvn-dl": "^2.0.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run oas:lint && npm run oas:resolve && npm run oas:lint-genereervariant && git checkout ./specificatie/genereervariant/openapi.*"
-    }
+    "@asyncapi/generator": "^1.9.18",
+    "@stoplight/spectral-cli": "^6.6.0",
+    "mvn-dl": "^6.0.0"
   }
 }
