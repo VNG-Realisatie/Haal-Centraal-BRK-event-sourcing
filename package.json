@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing#readme",
   "devDependencies": {
-    "@asyncapi/generator": "^1.9.18",
-    "@stoplight/spectral-cli": "^6.6.0",
-    "mvn-dl": "^6.0.0"
+    "@asyncapi/generator": "^1.14.1",
+    "@stoplight/spectral-cli": "^6.11.0",
+    "mvn-dl": "^6.1.1"
   }
 }
