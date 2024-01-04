@@ -1,10 +1,8 @@
 # Haal Centraal BRK events
 
-## Documentatie
+## Let op! Deze API wordt (nog) niet door het Kadaster aangeboden!
 
 ![lint oas](https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/workflows/lint-oas/badge.svg)
-
-## Let op! Wordt nog niet door het Kadaster aangeboden!
 
 De WOZ- en Erfpachtregistratie zijn grotendeels gebaseerd op de basisregistratie kadaster (BRK). Bijna iedere verandering van een kadastrale onroerende zaak leidt tot een verandering in de WOZ- en erfpachtregistratie. Daarom halen gemeenten wijzigingen op bij het kadaster en leggen een lokale kopie met historie aan. Dat kost veel energie, tijd en geld, en gaat niet altijd goed. Het kan niet anders, omdat gemeenten met terugwerkende kracht correcties moeten doen. Bijvoorbeeld n.a.v. een bezwaar. 
 
@@ -15,7 +13,7 @@ Door alle BRK gebeurtenissen op te slaan als onveranderlijke opeenvolgende feite
 * uitbesteden aan een belastingsamenwerking en wisselen van softwareleverancier wordt gemakkelijker: de nieuwe partij hoeft alleen de BRK (en BAG) events van de gemeente vanaf een bepaald tijdstip op te halen om nieuwe WOZ objecten voor de gemeente te kunnen produceren.
 
 ## Direct mee experimenteren?
-* Bekijk de Events Bevragen API specificaties met [Swagger UI](https://vng-realisatie.github.io/Haal-Centraal-BRK-event-sourcing/swagger-ui) of [Redoc](https://vng-realisatie.github.io/Haal-Centraal-BRK-event-sourcing/redoc)
+* Bekijk de Events Bevragen API specificaties met [Swagger UI](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/Check-op-links-en-teksten/specificatie/genereervariant/openapi.yaml).
 * Bekijk de Notificaties API specificaties met [AsyncAPI playground](https://playground.asyncapi.io/?load=https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/master/specificatie/asyncapi.yaml) 
 
 ## Heb je meer nodig? 
