@@ -1,6 +1,6 @@
 # Haal Centraal BRK events
 
-## Let op! Deze API wordt (nog) niet door het Kadaster aangeboden!
+## Let op! Deze API wordt tot nader order niet door het Kadaster aangeboden!
 
 ![lint oas](https://github.com/VNG-Realisatie/Haal-Centraal-BRK-event-sourcing/workflows/lint-oas/badge.svg)
 
